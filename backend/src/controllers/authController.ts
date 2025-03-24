@@ -15,7 +15,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     // Verifica se o usuário já existe
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      res.status(400).json({ message: 'Email já cadastrado' });
+      res.status(400).json({ message: 'Email already in use' });
       return;
     }
 
@@ -23,9 +23,16 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     const newUser = new User({ name, email, password });
     await newUser.save();
 
-    res.status(201).json({ message: 'Usuário registrado com sucesso' });
+    // Gera um token JWT automaticamente após o registro
+    const token = jwt.sign({ userId: newUser._id }, JWT_SECRET, { expiresIn: '1h' });
+
+    res.status(201).json({
+      message: 'User registered successfully',
+      token,
+      user: { id: newUser._id, name: newUser.name, email: newUser.email },
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Erro no servidor' });
+    res.status(500).json({ message: 'Error in server' });
   }
 };
 
@@ -39,7 +46,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // Como está utilizando senha, você precisará de um método para compará-la
+    // Verifica se a senha está correta
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       res.status(400).json({ message: 'Invalid Credentials' });

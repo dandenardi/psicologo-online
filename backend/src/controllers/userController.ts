@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import User from '../models/User';
 
+
 export const getProfile = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.user) {
