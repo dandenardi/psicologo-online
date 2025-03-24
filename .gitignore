@@ -1,0 +1,32 @@
+# Dependências
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ambiente
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Builds e Artefatos
+dist/
+build/
+
+# Cache
+.cache/
+coverage/
+
+# IDEs e Configs do Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Testes e Relatórios de Cobertura
+jest/
+coverage/
